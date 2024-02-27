@@ -2,6 +2,9 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import * as bodyParser from 'body-parser';
+
+// import dbTest from "./config/db"
+
 import routes from './routes/route';
 
 dotenv.config();
