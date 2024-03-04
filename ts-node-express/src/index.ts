@@ -1,13 +1,21 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+
+// import swaggerUi from "swagger-ui-express";
+// import swaggerDocument from "./swagger.json";
+
 import * as bodyParser from 'body-parser';
+
+// import dbTest from "./config/db"
+
 import routes from './routes/route';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+
 
 // body parser middleware
 app.use(bodyParser.json());
