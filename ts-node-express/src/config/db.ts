@@ -1,4 +1,4 @@
-import { createPool, MysqlError, PoolConnection } from 'mysql';
+import { createPool } from 'mysql2';
 import dotenv from "dotenv";
 import express, {Request, Response} from 'express';
 
