@@ -1,4 +1,3 @@
-// src/index.js
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 
@@ -9,6 +8,7 @@ import * as bodyParser from 'body-parser';
 
 // import dbTest from "./config/db"
 
+import cors from 'cors'; // Importeer de cors-middleware
 import routes from './routes/route';
 
 dotenv.config();
@@ -20,6 +20,9 @@ const port = process.env.PORT || 3000;
 // body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+// Voeg de cors-middleware toe
+app.use(cors());
 
 // applying the routes to the basepath '/api'
 app.use('/api', routes);
