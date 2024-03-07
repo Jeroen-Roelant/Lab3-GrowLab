@@ -9,7 +9,7 @@ dotenv.config();
 export const connection = createPool(
     {
         host: process.env.DB_HOST,
-        port: 3306, //parseInt(process.env.DB_PORT || "3306", 10),
+        port: parseInt(process.env.DB_PORT ?? '3306', 10),
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DB_DATABASE
