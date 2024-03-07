@@ -4,9 +4,10 @@ import dotenv from "dotenv";
 // import swaggerDocument from "./swagger.json";
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
+import moment from "moment";
+
 import routes from './routes/route';
 import { dbTest } from "./config/db";
-import moment from "moment";
 
 dotenv.config();
 

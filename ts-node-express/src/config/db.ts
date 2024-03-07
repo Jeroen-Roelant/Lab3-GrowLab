@@ -2,8 +2,6 @@ import { PoolConnection, createPool } from 'mysql2';
 import dotenv from "dotenv";
 import express, {Request, Response} from 'express';
 
-// import { MysqlError, PoolConnection } from 'mysql';
-
 dotenv.config();
 
 export const connection = createPool(

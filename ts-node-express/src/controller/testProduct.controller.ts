@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { testProduct } from '../model/testProduct';
-
 import { PoolConnection } from 'mysql2';
+
+import { testProduct } from '../model/testProduct';
 import { connection } from '../config/db';
 
 // const productList: testProduct[] = [
@@ -19,46 +19,6 @@ import { connection } from '../config/db';
 
 // const getAll = (req: Request, res: Response) => {
 //     res.status(200).send(productList);
-// }
-
-// const getAll = (req: Request, res: Response) => {
-//     connection.getConnection((err: NodeJS.ErrnoException | null, conn: PoolConnection) => {
-//         console.log(connection);
-//         conn.query("SELECT * FROM 'testProduct';", (err, resultSet: testProduct[]) => {
-//         conn.release();
-//         if (err) {
-//             res.status(500).send({
-//                 message: 'INTERNAL SERVER ERROR',
-//                 result: null
-//             });
-//             console.log("[Database]: INTERNAL SERVER ERROR");
-//         } else {
-//             res.status(200).send({
-//                 message: 'OK',
-//                 result: resultSet
-//             });
-//             console.log("[Database]: Database connection made");
-//         }})
-//     });
-// }
-
-// const getAll2 = (req: Request, res: Response) => {
-//     connection.getConnection((err: QueryError, conn: PoolConnection) => {
-//         conn.query("select * from product", (err, resultSet: Product[]) => {
-//             conn.release();
-//             if (err) {
-//                 res.status(500).send({
-//                     message: 'INTERNAL SERVER ERROR',
-//                     result: null
-//                 });
-//             } else {
-//                 res.status(200).send({
-//                     message: 'OK',
-//                     result: resultSet
-//                 });
-//             }
-//         })
-//     });
 // }
 
 const getAll = (req: Request, res: Response) => {
