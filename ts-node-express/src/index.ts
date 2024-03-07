@@ -31,13 +31,36 @@ app.get("/", async (req: Request, res: Response) => {
   }
   
   let msg: string = 
-  `<pre>
-  🌿 <b>GrowLab</b> by Jeroen Roelant & Marlène Braem. <br>
-  🌐 Express 4.18.2 & TypeScript API Server running. <br>
-  ⌚ Uptime ${moment.utc(moment().diff(moment(startTime))).format('HH:mm:ss')}.<br>
-  🪣 ${dbState}. <br>
-  🗺️ ${routes.stack.length} Available routes. <br>
-  </pre>`;
+  `
+<!DOCTYPE html>
+<html>
+  <pre>
+    <head>
+      <title>Page Title</title>
+    </head> 
+    <body>
+      <div>
+        <p>
+🌿 <b>GrowLab</b> by <a href="https://github.com/Jeroen-Roelant">Jeroen Roelant</a> & <a href="https://github.com/marlenebraem1999">Marlène Braem.</a> <br>
+🌐 Express 4.18.2 & TypeScript API Server running. <br>
+⌚ Uptime ${moment.utc(moment().diff(moment(startTime))).format('HH:mm:ss')}.<br>
+🪣 ${dbState}. <br>
+🗺️ ${routes.stack.length} Available routes. <br>
+        </p>
+      </div>
+    </body>
+  </pre>
+  <style>
+    body{
+      height: 100vh;
+      margin: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+<html>
+  `;
 
   res.send(msg);
 });
