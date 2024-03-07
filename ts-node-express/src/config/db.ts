@@ -1,4 +1,4 @@
-import { createPool } from 'mysql2';
+import { PoolConnection, createPool } from 'mysql2';
 import dotenv from "dotenv";
 import express, {Request, Response} from 'express';
 
@@ -16,25 +16,15 @@ export const connection = createPool(
     }
 );
 
-// const dbTest = (req: Request, res: Response) => {
-//     connection.getConnection((err: MysqlError, conn: PoolConnection) => {
-//         conn.query("SELECT * FROM `test` WHERE 1;", (err, resultSet: any[]) => {
-//         conn.release();
-//         if (err) {
-//             res.status(500).send({
-//                 message: 'INTERNAL SERVER ERROR',
-//                 result: null
-//             });
-//             console.log("[Database]: INTERNAL SERVER ERROR");
-//         } else {
-//             res.status(200).send({
-//                 message: 'OK',
-//                 result: resultSet
-//             });
-//             console.log("[Database]: Database connection made");
-//         }
-//         })
-//     });
-// }
-
-// export default dbTest;
+// Function to check if database connection is made
+export async function dbTest(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+        connection.getConnection((err: NodeJS.ErrnoException | null, conn: PoolConnection) => {
+            if (err) {
+                resolve(false); // Connection failed
+            } else {
+                resolve(!!conn); // Return true if conn is defined
+            }
+        });
+    });
+}

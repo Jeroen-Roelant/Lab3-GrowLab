@@ -1,15 +1,11 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-
 // import swaggerUi from "swagger-ui-express";
 // import swaggerDocument from "./swagger.json";
-
 import * as bodyParser from 'body-parser';
-
-// import dbTest from "./config/db"
-
-import cors from 'cors'; // Importeer de cors-middleware
+import cors from 'cors';
 import routes from './routes/route';
+import { dbTest } from "./config/db";
 
 dotenv.config();
 
@@ -27,10 +23,22 @@ app.use(cors());
 // applying the routes to the basepath '/api'
 app.use('/api', routes);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express & TypeScript Server running");
+app.get("/", async (req: Request, res: Response) => {
+  let dbState: string = "MySQL Connection failed";
+  if (await dbTest()){
+    dbState = "MySQL connection made ";
+  }
+  let msg: string = `Express & TypeScript API Server running, ${dbState}`;
+
+  res.send(msg);
 });
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+app.listen(port, async () => {
+  console.log(  `🟢 [Express]:  Server is running at http://localhost:${port} `);
+  if(await dbTest()){
+    console.log(`🟢 [MySQL]:    MySQL database Connection made at http://${process.env.DB_HOST}/${process.env.DB_PORT} on DB ${process.env.DB_DATABASE} user \'${process.env.DB_USER}\'`);
+  }
+  else{
+    console.log(`🔴 [MySQL]:    MySQL database failed to connect at http://${process.env.DB_HOST}:${process.env.DB_PORT} on DB ${process.env.DB_DATABASE} user \'${process.env.DB_USER}\'`);
+  }
 });
