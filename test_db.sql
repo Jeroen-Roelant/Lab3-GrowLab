@@ -39,12 +39,12 @@ CREATE TABLE `tbltestproduct` (
 
 INSERT INTO `tbltestproduct` (`id`, `age`, `name`) VALUES
 (2, 332, 'Bertje'),
-(3, 22, 'Patje'),
-(4, 13, 'Stefke'),
+(3, 22, 'jeanke'),
+(4, 13, 'marieke'),
 (5, 27, 'Steveke'),
-(6, 19, 'Anneliesje'),
+(6, 19, 'bobke'),
 (7, 100, 'Jerommeke'),
-(8, 30, 'Rani'),
+(8, 30, 'lil barry allen'),
 (9, 30, 'Joske');
 
 -- --------------------------------------------------------
