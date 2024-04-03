@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
+import { TestProductModule } from './test-product/test-product.module';
+import { TestProduct } from './test-product/entities/test-product.entity';
+
 dotenv.config();
 
 @Module({
@@ -17,9 +20,10 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_DATABASE,
-      entities: [],
+      entities: [TestProduct],
       synchronize: true,
     }),
+    TestProductModule
   ],
   controllers: [AppController],
   providers: [AppService],
