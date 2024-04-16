@@ -19,6 +19,7 @@ import { PendingConnectionModule } from './pending-connection/pending-connection
 import { PostModule } from './post/post.module';
 import { StartupModule } from './startup/startup.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 dotenv.config();
 
@@ -45,7 +46,8 @@ dotenv.config();
     PendingConnectionModule,
     PostModule,
     StartupModule,
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
