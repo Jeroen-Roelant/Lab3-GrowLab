@@ -26,3 +26,16 @@ export class Post {
   @Column({ type: 'text', comment: 'liked users IDs saved as CSV' })
   likes: string;
 }
+
+/*
+{
+  "UUID": "",
+  "poster": "",
+  "visibility": "public",
+  "title": "",
+  "content": "",
+  "type": "text",
+  "comments": "",
+  "likes": ""
+}
+*/

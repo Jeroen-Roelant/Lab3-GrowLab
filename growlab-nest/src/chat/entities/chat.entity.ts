@@ -14,3 +14,14 @@ export class Chat {
   @Column({ type: 'mediumtext', comment: 'message IDs saved as CSV' })
   messages: string;
 }
+
+/*
+
+{
+  "UUID": "",
+  "user1": "",
+  "user2": "",
+  "messages": ""
+}
+
+*/

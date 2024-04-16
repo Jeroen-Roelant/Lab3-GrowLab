@@ -14,3 +14,12 @@ export class Comment {
   @Column({ type: 'text', comment: 'liked users IDs saved as CSV' })
   likedUsers: string;
 }
+
+/*
+{
+  "UUID": "",
+  "poster": "",
+  "content": "",
+  "likedUsers": ""
+}
+*/

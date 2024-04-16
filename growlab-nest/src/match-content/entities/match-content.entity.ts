@@ -14,3 +14,12 @@ export class MatchContent {
   @Column({ type: 'text', comment: 'textfield with short description' })
   lookingFor: string;
 }
+
+/*
+{
+  "UUID": "",
+  "interests": "",
+  "talents": "",
+  "lookingFor": ""
+}
+*/

@@ -14,3 +14,12 @@ export class PendingConnection {
   @Column({ type: 'enum', enum: ['sent', 'accepted', 'denied'] })
   state: string;
 }
+
+/*
+{
+  "UUID": "",
+  "idSender": "",
+  "idTarget": "",
+  "state": "sent"
+}
+*/

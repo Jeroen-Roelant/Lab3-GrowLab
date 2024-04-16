@@ -17,3 +17,13 @@ export class ExperienceEntry {
   @Column({ type: 'enum', enum: ['education', 'work', 'other'] })
   type: string;
 }
+
+/*
+{
+  "UUID": "",
+  "title": "",
+  "icon": "",
+  "description": 0,
+  "type": "education"
+}
+*/

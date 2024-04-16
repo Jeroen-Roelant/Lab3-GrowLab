@@ -44,3 +44,22 @@ export class User {
   @Column({ type: 'text', comment: 'experience IDs stored as CSV' })
   experienceId: string;
 }
+
+/*
+{
+  "UUID": "",
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "role": "starter",
+  "connectionsCoaches": "",
+  "connectionsStarters": "",
+  "isProUser": 0,
+  "badgeId": "",
+  "dateJoined": "2024-01-01",
+  "profilePictureUrl": "",
+  "bannerPictureUrl": "",
+  "educationId": "",
+  "experienceId": ""
+}
+*/

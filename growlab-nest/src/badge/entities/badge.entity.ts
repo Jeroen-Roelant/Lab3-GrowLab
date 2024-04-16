@@ -14,3 +14,12 @@ export class Badge {
   @Column({ type: 'text' })
   description: string;
 }
+
+/*
+{
+  "UUID": "",
+  "title": "",
+  "icon": "",
+  "description": ""
+}
+*/

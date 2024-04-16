@@ -17,3 +17,13 @@ export class Message {
   @Column({ type: 'enum', enum: ['text', 'image'] })
   type: string;
 }
+
+/*
+{
+  "UUID": "",
+  "chat": "",
+  "sender": "",
+  "content": "",
+  "type": "text"
+}
+*/

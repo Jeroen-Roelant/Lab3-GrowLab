@@ -20,3 +20,14 @@ export class Startup {
   @Column({ type: 'text', comment: 'post IDs stored as CSV' })
   postId: string;
 }
+
+/*
+{
+  "UUID": "",
+  "idOwner": "",
+  "idMember": "",
+  "title": "",
+  "description": "",
+  "postId": ""
+}
+*/

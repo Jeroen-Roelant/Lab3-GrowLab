@@ -29,3 +29,17 @@ export class CoachClass {
   @Column({ type: 'text', comment: 'Session IDs stored as CSV' })
   sessionId: string;
 }
+
+/*
+{
+  "UUID": "",
+  "idOwner": "",
+  "idMember": "",
+  "title": "",
+  "description": "",
+  "totalCheckpoints": 0,
+  "currentCheckpoint": "",
+  "postId": "",
+  "sessionId": ""
+}
+*/
