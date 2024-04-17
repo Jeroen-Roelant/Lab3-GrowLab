@@ -8,6 +8,18 @@ import { DataSource } from 'typeorm';
 
 import { TestProductModule } from './test-product/test-product.module';
 import { TestProduct } from './test-product/entities/test-product.entity';
+import { BadgeModule } from './badge/badge.module';
+import { ChatModule } from './chat/chat.module';
+import { CoachClassModule } from './coach-class/coach-class.module';
+import { CommentModule } from './comment/comment.module';
+import { ExperienceEntryModule } from './experience-entry/experience-entry.module';
+import { MatchContentModule } from './match-content/match-content.module';
+import { MessageModule } from './message/message.module';
+import { PendingConnectionModule } from './pending-connection/pending-connection.module';
+import { PostModule } from './post/post.module';
+import { StartupModule } from './startup/startup.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 dotenv.config();
 
@@ -20,10 +32,22 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_DATABASE,
-      entities: [TestProduct],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     }),
-    TestProductModule
+    TestProductModule,
+    BadgeModule,
+    ChatModule,
+    CoachClassModule,
+    CommentModule,
+    ExperienceEntryModule,
+    MatchContentModule,
+    MessageModule,
+    PendingConnectionModule,
+    PostModule,
+    StartupModule,
+    UserModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

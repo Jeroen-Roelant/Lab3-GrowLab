@@ -17,7 +17,7 @@ export class AppService {
         <p>
 🌿 <b>GrowLab</b> by <a href="https://github.com/Jeroen-Roelant">Jeroen Roelant</a> & <a href="https://github.com/marlenebraem1999">Marlène Braem.</a> <br>
 🌐 NEST & TypeScript API Server running. <br>
-🗃 MySQL Connection made. <br>
+📦 MySQL Connection made. <br>
         </p>
       </div>
     </body>
