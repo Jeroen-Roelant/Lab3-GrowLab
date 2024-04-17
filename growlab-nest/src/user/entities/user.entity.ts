@@ -1,5 +1,13 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
+export enum UserRole {
+  ADMIN = "admin",
+  STARTER = "starter",
+  COACH = "coach",
+  MODERATOR = "moderator",
+  GHOST = "ghost"
+}
+
 @Entity('tbluser')
 export class User {
   @PrimaryColumn({ type: 'varchar', length: 36, comment: 'primary key UUID' })
@@ -14,7 +22,7 @@ export class User {
   @Column({ type: 'varchar', length: 45 })
   email: string;
 
-  @Column({ type: 'enum', enum: ['starter', 'coach', 'admin', 'moderator'] })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.GHOST})
   role: string;
 
   @Column({ type: 'text', comment: 'Coach connections stored as CSV' })
