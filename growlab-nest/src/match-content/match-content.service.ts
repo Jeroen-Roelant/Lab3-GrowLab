@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateMatchContentDto } from './dto/create-match-content.dto';
 import { UpdateMatchContentDto } from './dto/update-match-content.dto';
+import { MatchContent } from './entities/match-content.entity';
 
 @Injectable()
 export class MatchContentService {
+  constructor(
+    @InjectRepository(MatchContent)
+    private matchContentRepository: Repository<MatchContent>,
+  ) {}
+
   create(createMatchContentDto: CreateMatchContentDto) {
-    return 'This action adds a new matchContent';
+    this.matchContentRepository.save(createMatchContentDto);
   }
 
   findAll() {
-    return `This action returns all matchContent`;
+    return this.matchContentRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} matchContent`;
+  findOne(UUID: string) {
+    return this.matchContentRepository.findOneBy({ UUID });
   }
 
-  update(id: number, updateMatchContentDto: UpdateMatchContentDto) {
-    return `This action updates a #${id} matchContent`;
+  update(UUID: string, updateMatchContentDto: UpdateMatchContentDto) {
+    return this.matchContentRepository.update(UUID, updateMatchContentDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} matchContent`;
+  remove(UUID: string) {
+    
   }
 }

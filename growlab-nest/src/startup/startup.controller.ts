@@ -17,18 +17,18 @@ export class StartupController {
     return this.startupService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.startupService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.startupService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStartupDto: UpdateStartupDto) {
-    return this.startupService.update(+id, updateStartupDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateStartupDto: UpdateStartupDto) {
+    return this.startupService.update(UUID, updateStartupDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.startupService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.startupService.remove(UUID);
   }
 }

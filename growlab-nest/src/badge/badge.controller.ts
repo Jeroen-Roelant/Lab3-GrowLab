@@ -17,18 +17,18 @@ export class BadgeController {
     return this.badgeService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.badgeService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.badgeService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBadgeDto: UpdateBadgeDto) {
-    return this.badgeService.update(+id, updateBadgeDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateBadgeDto: UpdateBadgeDto) {
+    return this.badgeService.update(UUID, updateBadgeDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.badgeService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.badgeService.remove(UUID);
   }
 }

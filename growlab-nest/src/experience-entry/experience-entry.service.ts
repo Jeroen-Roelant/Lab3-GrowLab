@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateExperienceEntryDto } from './dto/create-experience-entry.dto';
 import { UpdateExperienceEntryDto } from './dto/update-experience-entry.dto';
+import { ExperienceEntry } from './entities/experience-entry.entity';
 
 @Injectable()
 export class ExperienceEntryService {
+  constructor(
+    @InjectRepository(ExperienceEntry)
+    private experienceEntryRepository: Repository<ExperienceEntry>,
+  ) {}
+
   create(createExperienceEntryDto: CreateExperienceEntryDto) {
-    return 'This action adds a new experienceEntry';
+    this.experienceEntryRepository.save(createExperienceEntryDto);
   }
 
   findAll() {
-    return `This action returns all experienceEntry`;
+    return this.experienceEntryRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} experienceEntry`;
+  findOne(UUID: string) {
+    return this.experienceEntryRepository.findOneBy({ UUID });
   }
 
-  update(id: number, updateExperienceEntryDto: UpdateExperienceEntryDto) {
-    return `This action updates a #${id} experienceEntry`;
+  update(UUID: string, updateExperienceEntryDto: UpdateExperienceEntryDto) {
+    return this.experienceEntryRepository.update(UUID, updateExperienceEntryDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} experienceEntry`;
+  remove(UUID: string) {
+    
   }
 }

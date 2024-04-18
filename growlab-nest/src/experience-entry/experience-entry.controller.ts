@@ -17,18 +17,18 @@ export class ExperienceEntryController {
     return this.experienceEntryService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.experienceEntryService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.experienceEntryService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExperienceEntryDto: UpdateExperienceEntryDto) {
-    return this.experienceEntryService.update(+id, updateExperienceEntryDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateExperienceEntryDto: UpdateExperienceEntryDto) {
+    return this.experienceEntryService.update(UUID, updateExperienceEntryDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.experienceEntryService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.experienceEntryService.remove(UUID);
   }
 }
