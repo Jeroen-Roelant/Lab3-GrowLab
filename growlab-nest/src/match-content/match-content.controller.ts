@@ -17,18 +17,18 @@ export class MatchContentController {
     return this.matchContentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.matchContentService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.matchContentService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMatchContentDto: UpdateMatchContentDto) {
-    return this.matchContentService.update(+id, updateMatchContentDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateMatchContentDto: UpdateMatchContentDto) {
+    return this.matchContentService.update(UUID, updateMatchContentDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.matchContentService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.matchContentService.remove(UUID);
   }
 }

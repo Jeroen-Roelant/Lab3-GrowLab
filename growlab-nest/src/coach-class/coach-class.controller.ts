@@ -17,18 +17,18 @@ export class CoachClassController {
     return this.coachClassService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coachClassService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.coachClassService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoachClassDto: UpdateCoachClassDto) {
-    return this.coachClassService.update(+id, updateCoachClassDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateCoachClassDto: UpdateCoachClassDto) {
+    return this.coachClassService.update(UUID, updateCoachClassDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.coachClassService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.coachClassService.remove(UUID);
   }
 }

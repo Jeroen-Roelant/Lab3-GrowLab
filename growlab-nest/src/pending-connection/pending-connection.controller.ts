@@ -17,18 +17,18 @@ export class PendingConnectionController {
     return this.pendingConnectionService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pendingConnectionService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.pendingConnectionService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePendingConnectionDto: UpdatePendingConnectionDto) {
-    return this.pendingConnectionService.update(+id, updatePendingConnectionDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updatePendingConnectionDto: UpdatePendingConnectionDto) {
+    return this.pendingConnectionService.update(UUID, updatePendingConnectionDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pendingConnectionService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.pendingConnectionService.remove(UUID);
   }
 }

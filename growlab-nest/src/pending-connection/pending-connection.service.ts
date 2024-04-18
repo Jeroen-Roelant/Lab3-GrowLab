@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreatePendingConnectionDto } from './dto/create-pending-connection.dto';
 import { UpdatePendingConnectionDto } from './dto/update-pending-connection.dto';
+import { PendingConnection } from './entities/pending-connection.entity';
 
 @Injectable()
 export class PendingConnectionService {
+  constructor(
+    @InjectRepository(PendingConnection)
+    private pendingConnectionRepository: Repository<PendingConnection>,
+  ) {}
+
   create(createPendingConnectionDto: CreatePendingConnectionDto) {
-    return 'This action adds a new pendingConnection';
+    this.pendingConnectionRepository.save(createPendingConnectionDto);
   }
 
   findAll() {
-    return `This action returns all pendingConnection`;
+    return this.pendingConnectionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pendingConnection`;
+  findOne(UUID: string) {
+    return this.pendingConnectionRepository.findOneBy({ UUID });
   }
 
-  update(id: number, updatePendingConnectionDto: UpdatePendingConnectionDto) {
-    return `This action updates a #${id} pendingConnection`;
+  update(UUID: string, updatePendingConnectionDto: UpdatePendingConnectionDto) {
+    return this.pendingConnectionRepository.update(UUID, updatePendingConnectionDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pendingConnection`;
+  remove(UUID: string) {
+    
   }
 }

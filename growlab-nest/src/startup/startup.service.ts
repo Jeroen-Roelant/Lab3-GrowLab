@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateStartupDto } from './dto/create-startup.dto';
 import { UpdateStartupDto } from './dto/update-startup.dto';
+import { Startup } from './entities/startup.entity';
 
 @Injectable()
 export class StartupService {
+  constructor(
+    @InjectRepository(Startup)
+    private startupRepository: Repository<Startup>,
+  ) {}
+
   create(createStartupDto: CreateStartupDto) {
-    return 'This action adds a new startup';
+    this.startupRepository.save(createStartupDto);
   }
 
   findAll() {
-    return `This action returns all startup`;
+    return this.startupRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} startup`;
+  findOne(UUID: string) {
+    return this.startupRepository.findOneBy({ UUID });
   }
 
-  update(id: number, updateStartupDto: UpdateStartupDto) {
-    return `This action updates a #${id} startup`;
+  update(UUID: string, updateStartupDto: UpdateStartupDto) {
+    return this.startupRepository.update(UUID, updateStartupDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} startup`;
+  remove(UUID: string) {
+    
   }
 }

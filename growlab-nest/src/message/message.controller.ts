@@ -17,18 +17,18 @@ export class MessageController {
     return this.messageService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.messageService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.messageService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMessageDto: UpdateMessageDto) {
-    return this.messageService.update(+id, updateMessageDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateMessageDto: UpdateMessageDto) {
+    return this.messageService.update(UUID, updateMessageDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.messageService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.messageService.remove(UUID);
   }
 }

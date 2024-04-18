@@ -17,18 +17,18 @@ export class ChatController {
     return this.chatService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.chatService.findOne(+id);
+  @Get(':UUID')
+  findOne(@Param('UUID') UUID: string) {
+    return this.chatService.findOne(UUID);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChatDto: UpdateChatDto) {
-    return this.chatService.update(+id, updateChatDto);
+  @Patch(':UUID')
+  update(@Param('UUID') UUID: string, @Body() updateChatDto: UpdateChatDto) {
+    return this.chatService.update(UUID, updateChatDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.chatService.remove(+id);
+  @Delete(':UUID')
+  remove(@Param('UUID') UUID: string) {
+    return this.chatService.remove(UUID);
   }
 }

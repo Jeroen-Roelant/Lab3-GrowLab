@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateBadgeDto } from './dto/create-badge.dto';
 import { UpdateBadgeDto } from './dto/update-badge.dto';
+import { Badge } from './entities/badge.entity';
 
 @Injectable()
 export class BadgeService {
+  constructor(
+    @InjectRepository(Badge)
+    private badgeRepository: Repository<Badge>,
+  ) {}
+
   create(createBadgeDto: CreateBadgeDto) {
-    return 'This action adds a new badge';
+    this.badgeRepository.save(createBadgeDto);
   }
 
   findAll() {
-    return `This action returns all badge`;
+    return this.badgeRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} badge`;
+  findOne(UUID: string) {
+    return this.badgeRepository.findOneBy({ UUID });
   }
 
-  update(id: number, updateBadgeDto: UpdateBadgeDto) {
-    return `This action updates a #${id} badge`;
+  update(UUID: string, updateBadgeDto: UpdateBadgeDto) {
+    return this.badgeRepository.update(UUID, updateBadgeDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} badge`;
+  remove(UUID: string) {
+    
   }
 }
