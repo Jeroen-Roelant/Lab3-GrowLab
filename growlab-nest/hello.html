@@ -5,11 +5,13 @@
       <title> 🌿 GrowLab NestJS running</title>
     </head> 
     <body>
-      <div class="infoBox">
+      <div>
         <p>
-🌿 <b>GrowLab</b> by <a href="https://github.com/Jeroen-Roelant">Jeroen Roelant</a> & <a href="https://github.com/marlenebraem1999">Marlène Braem.</a> <br>
+🌿 <b>GrowLab</b> by <a href="https://github.com/Jeroen-Roelant">Jeroen Roelant</a> & <a href="https://github.com/marlenebraem1999">Marlène Braem</a>. <br>
 🌐 NEST & TypeScript API Server running. <br>
 📦 MySQL Connection made. <br>
+🚀 Server is up and running on port 3000. <br>
+🔗 <a href="http://localhost:3000">http://localhost:3000</a>
         </p>
       </div>
     </body>
@@ -21,17 +23,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: rgba(68, 68, 68, 0.342);
     }
-
-    .infoBox{
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    }
-
     p{
       padding: 0%;
       margin: 0%;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      background-color: #F2F2F2;
+      -webkit-transition: all .4s ease;
+    }
+    p:hover{
+      box-shadow: 0px 0px 10px rgba(80, 255, 255, 0.582);
+      scale: 1.1;
+      -webkit-transition: all .4s ease;
     }
   </style>
 <html>

@@ -25,31 +25,31 @@ export class User {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.GHOST})
   role: string;
 
-  @Column({ type: 'text', comment: 'Coach connections stored as CSV' })
+  @Column({ type: 'text', comment: 'Coach connections stored as CSV', nullable: true })
   connectionsCoaches: string;
 
-  @Column({ type: 'text', comment: 'Starter connections stored as CSV' })
+  @Column({ type: 'text', comment: 'Starter connections stored as CSV', nullable: true})
   connectionsStarters: string;
 
   @Column({ type: 'tinyint', width: 1, comment: 'Bool that decides if user gets pro perks (temp option)' })
   isProUser: number;
 
-  @Column({ type: 'text', comment: 'Badge IDs stored as CSV' })
+  @Column({ type: 'text', comment: 'Badge IDs stored as CSV', nullable: true })
   badgeId: string;
 
   @Column({ type: 'date' })
   dateJoined: Date;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   profilePictureUrl: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   bannerPictureUrl: string;
 
-  @Column({ type: 'text', comment: 'experience IDs stored as CSV' })
+  @Column({ type: 'text', comment: 'experience IDs stored as CSV', nullable: true })
   educationId: string;
 
-  @Column({ type: 'text', comment: 'experience IDs stored as CSV' })
+  @Column({ type: 'text', comment: 'experience IDs stored as CSV', nullable: true })
   experienceId: string;
 }
 
