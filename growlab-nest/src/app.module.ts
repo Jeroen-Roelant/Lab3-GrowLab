@@ -20,6 +20,7 @@ import { PostModule } from './post/post.module';
 import { StartupModule } from './startup/startup.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { RouterModule } from '@nestjs/core';
 
 dotenv.config();
 
@@ -54,5 +55,6 @@ dotenv.config();
 })
 
 export class AppModule {
-  constructor(private dataSource: DataSource) {}
+  constructor(private dataSource: DataSource) {
+  }
 }
