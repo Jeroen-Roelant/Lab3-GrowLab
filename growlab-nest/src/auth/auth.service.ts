@@ -43,7 +43,10 @@ export class AuthService {
     username: string, 
     pass: string
   ): Promise<{ access_token: string }> {
-    // console.log(username);
+
+    // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
+
+    console.log(username);
     const user = await this.userService.findOneByEmail(username);
 
     if (!user) {
@@ -52,7 +55,7 @@ export class AuthService {
     
     const authUser = await this.findOne(user.UUID);
 
-    // console.log(authUser);
+    console.log(authUser);
 
     if (authUser.passHash !== pass) {
       throw new UnauthorizedException();
