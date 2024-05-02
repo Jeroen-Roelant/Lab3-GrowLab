@@ -15,7 +15,9 @@ export class AuthService {
     private authRepository: Repository<Auth>,
     private userService: UserService,
     private jwtService: JwtService
-  ) {}
+  ) {
+    require("dotenv").config();
+  }
 
   create(createAuthDto: CreateAuthDto) {
     this.authRepository.save(createAuthDto);
@@ -41,7 +43,7 @@ export class AuthService {
     username: string, 
     pass: string
   ): Promise<{ access_token: string }> {
-    console.log(username);
+    // console.log(username);
     const user = await this.userService.findOneByEmail(username);
 
     if (!user) {
@@ -50,16 +52,20 @@ export class AuthService {
     
     const authUser = await this.findOne(user.UUID);
 
-    console.log(authUser.passHash);
-    console.log(pass);
+    // console.log(authUser);
 
     if (authUser.passHash !== pass) {
       throw new UnauthorizedException();
     }
+    console.log(authUser.passHash === pass);
     
-    const payload = { sub: authUser.UUID, username: user.email };
+    const payload = { 
+      sub: authUser.UUID, 
+      username: user.email
+    }
+
     return {
       access_token: await this.jwtService.signAsync(payload),
-    };
+    }
   }
 }

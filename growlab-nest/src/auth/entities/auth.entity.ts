@@ -5,7 +5,7 @@ export class Auth {
   @PrimaryColumn({ type: 'varchar', length: 36 })
   UUID: string;
 
-  @Column({ type: 'varchar', length: 32, comment: 'password stored as hash in SHA256' })
+  @Column({ type: 'varchar', length: 64, comment: 'password stored as hash in SHA256' })
   passHash: string;
 }
 

@@ -8,13 +8,15 @@ import { Auth } from './entities/auth.entity';
 import { UserModule } from 'src/user/user.module';
 import { jwtConstants } from './constants';
 
+require("dotenv").config();
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Auth]), 
     forwardRef(() => UserModule),
     JwtModule.register({
       global: true,
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
   ],
