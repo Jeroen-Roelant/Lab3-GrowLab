@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 
 import { CreateCoachClassDto } from './dto/create-coach-class.dto';
 import { UpdateCoachClassDto } from './dto/update-coach-class.dto';
@@ -19,6 +19,14 @@ export class CoachClassService {
 
   findAll() {
     return this.coachClassRepository.find();
+  }
+
+  async findAllByMember(UUID: string) {
+    return await this.coachClassRepository.find({
+      where: {
+        idMember: Like(`%${UUID}%`)
+      }
+    });
   }
 
   findOne(UUID: string) {

@@ -28,6 +28,9 @@ export class CoachClass {
 
   @Column({ type: 'text', comment: 'Session IDs stored as CSV' })
   sessionId: string;
+
+  @Column({ type: 'date' })
+  nextSession: string;
 }
 
 /*

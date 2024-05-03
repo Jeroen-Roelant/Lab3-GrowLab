@@ -26,17 +26,11 @@ export class UserService {
   }
 
   async findOneByEmail(emailstr: string) {
-    var user = await this.userRepository.findOne({
+    return await this.userRepository.findOne({
       where:{
         email: emailstr
       }
     });
-
-    //deze is null, fix asap
-
-    console.log(user);
-
-    return user;
   }
 
   update(UUID: string, updateUserDto: UpdateUserDto) {

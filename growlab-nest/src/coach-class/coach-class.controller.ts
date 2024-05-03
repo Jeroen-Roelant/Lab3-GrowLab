@@ -17,6 +17,11 @@ export class CoachClassController {
     return this.coachClassService.findAll();
   }
 
+  @Get('forMember/:UUID')
+  findByMember(@Param('UUID') UUID: string) {
+    return this.coachClassService.findAllByMember(UUID);
+  }
+
   @Get(':UUID')
   findOne(@Param('UUID') UUID: string) {
     return this.coachClassService.findOne(UUID);
