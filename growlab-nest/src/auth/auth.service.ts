@@ -53,9 +53,11 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     
+    console.log(user);
+
     const authUser = await this.findOne(user.UUID);
 
-    // console.log(authUser);
+    console.log(authUser);
 
     if (authUser.passHash !== pass) {
       throw new UnauthorizedException();
