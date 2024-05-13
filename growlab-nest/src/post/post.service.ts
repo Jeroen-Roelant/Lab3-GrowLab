@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -49,14 +49,19 @@ export class PostService {
         posts.push(post);
       });
     }));
-
-    posts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
     return posts;
   }
 
   update(UUID: string, updatePostDto: UpdatePostDto) {
     return this.postRepository.update(UUID, updatePostDto);
+  }
+
+  async addLike(UUID: string, likeUUID: string) {
+    const post = await this.postRepository.findOneBy({ UUID });
+    if (!post.likes.includes(likeUUID)) {
+      post.likes += likeUUID + ',';
+      this.postRepository.save(post);
+    }
   }
 
   remove(UUID: string) {
