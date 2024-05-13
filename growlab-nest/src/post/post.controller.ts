@@ -1,15 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postService.create(createPostDto);
+  create(@Request() req: any, @Body() createPostDto: CreatePostDto) {
+    console.log(req.user);
+    try {
+      createPostDto.poster = req.user.sub;
+      return this.postService.create(createPostDto);
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   @Get()
@@ -20,6 +29,11 @@ export class PostController {
   @Get(':UUID')
   findOne(@Param('UUID') UUID: string) {
     return this.postService.findOne(UUID);
+  }
+
+  @Get('forCoachesByMember/:UUID')
+  findByMember(@Param('UUID') UUID: string) {
+    return this.postService.forCoachesByMember(UUID);
   }
 
   @Patch(':UUID')
