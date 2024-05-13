@@ -25,6 +25,9 @@ export class Post {
 
   @Column({ type: 'text', comment: 'liked users IDs saved as CSV' })
   likes: string;
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 }
 
 /*
