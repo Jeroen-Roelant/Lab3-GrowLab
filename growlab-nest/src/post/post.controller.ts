@@ -48,9 +48,9 @@ export class PostController {
   @Get('like/:UUID')
   likePost(@Request() req: any, @Param('UUID') UUID: string) {
     try {
-      this.postService.addLike(UUID, req.user.sub);
+      let r = this.postService.addLike(UUID, req.user.sub);
       console.log(req.user.sub);
-      return HttpStatus.OK;
+      return r;
     } catch (error) {
       console.log(error);
     }

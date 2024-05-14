@@ -66,6 +66,12 @@ export class PostService {
     if (!post.likes.includes(likeUUID)) {
       post.likes += likeUUID + ',';
       this.postRepository.save(post);
+      return 1;
+    }
+    else {
+      post.likes = post.likes.replace(likeUUID + ',', '');
+      this.postRepository.save(post);
+      return -1;
     }
   }
 
