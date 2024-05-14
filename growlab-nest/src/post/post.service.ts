@@ -33,23 +33,28 @@ export class PostService {
   }
 
   async forCoachesByMember(UUID: string) {
-    const user = await this.userService.findOne(UUID);
+    try {
+      const user = await this.userService.findOne(UUID);
 
-    const csvData = user.connectionsCoaches.split(',');
+      const csvData = user.connectionsCoaches.split(',');
 
-    let posts = [];
+      let posts = [];
 
-    await Promise.all(csvData.map(async (coach) => { 
-      const coachPosts = await this.postRepository.find({
-        where: {
-          poster: coach
-        }
-      });
-      coachPosts.forEach((post) => {
-        posts.push(post);
-      });
-    }));
-    return posts;
+      await Promise.all(csvData.map(async (coach) => { 
+        const coachPosts = await this.postRepository.find({
+          where: {
+            poster: coach
+          }
+        });
+        coachPosts.forEach((post) => {
+          posts.push(post);
+        });
+      }));
+      return posts;
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 
   update(UUID: string, updatePostDto: UpdatePostDto) {
