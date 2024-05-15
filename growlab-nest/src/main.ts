@@ -6,6 +6,8 @@ import cors from 'cors';
 
 dotenv.config();
 
+declare const module: any;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -13,6 +15,11 @@ async function bootstrap() {
   app.use(cors());
 
   await app.listen(port);
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();
 
