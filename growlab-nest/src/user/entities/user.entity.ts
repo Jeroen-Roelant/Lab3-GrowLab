@@ -51,6 +51,15 @@ export class User {
 
   @Column({ type: 'text', comment: 'experience IDs stored as CSV', nullable: true })
   experienceId: string;
+
+  @Column({ type: 'varchar', length: 600, nullable: true})
+  about: string;
+
+  @Column({ type: 'text', comment: 'Talents connections stored as CSV', nullable: true})
+  talenten: string;
+
+  @Column({ type: 'text', comment: 'Interesses connections stored as CSV', nullable: true})
+  interesses: string;
 }
 
 /*
