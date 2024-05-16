@@ -3,6 +3,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 
 @Controller('post')
 export class PostController {
@@ -35,11 +36,12 @@ export class PostController {
   }
 
   @UseGuards(AuthGuard)
-  @Post('/comments/:UUID')
-  makeComment(@Request() req: any, @Body() createPostDto: CreatePostDto) {
+  @Post('/comment/:UUID')
+  makeComment(@Request() req: any, @Param('UUID') UUID: string, @Body() createCommentDto: CreateCommentDto) {
     try {
-      createPostDto.poster = req.user.sub;
-      return this.postService.create(createPostDto);
+      createCommentDto.poster = req.user.sub;
+
+      return this.postService.addComment(UUID, createCommentDto);
     } catch (error) {
       console.log(error);
     }

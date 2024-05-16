@@ -8,6 +8,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 import { UserService } from 'src/user/user.service';
 import { CommentService } from 'src/comment/comment.service';
+import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 
 @Injectable()
 export class PostService {
@@ -56,18 +57,17 @@ export class PostService {
     const resPost = await this.postRepository.findOneBy({ UUID });
 
     const cIds = resPost.comments.split(',');
-    let comments = [];
+    
+    const comments = await Promise.all(
+      cIds.map(async cUUID => {
+        return this.commentService.findOne(cUUID);
+      })
+    );
 
-    let poster = await this.userService.findOne(resPost.poster);
-
-    cIds.forEach(cUUID => {
-      comments.push(this.commentService.findOne(cUUID));
-    });
+    comments.pop();
 
     return comments;
-    
   }
-
 
   async forCoachesByMember(UUID: string) {
     try {
@@ -110,6 +110,15 @@ export class PostService {
       this.postRepository.save(post);
       return -1;
     }
+  }
+
+  async addComment(UUID: string, createCommentDto: CreateCommentDto) {
+    const post = await this.postRepository.findOneBy({ UUID });
+
+    const comment = await this.commentService.create(createCommentDto);
+    post.comments += comment.UUID + ',';
+
+    this.postRepository.save(post);
   }
 
   remove(UUID: string) {

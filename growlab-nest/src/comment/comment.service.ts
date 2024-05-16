@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -14,7 +15,11 @@ export class CommentService {
   ) {}
 
   create(createCommentDto: CreateCommentDto) {
-    this.commentRepository.save(createCommentDto);
+    const comment = new Comment();
+    Object.assign(comment, createCommentDto);
+    comment.UUID = uuidv4();
+    this.commentRepository.save(comment);
+    return comment;
   }
 
   findAll() {
