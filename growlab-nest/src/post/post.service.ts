@@ -7,6 +7,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 import { UserService } from 'src/user/user.service';
+import { CommentService } from 'src/comment/comment.service';
 
 @Injectable()
 export class PostService {
@@ -14,6 +15,7 @@ export class PostService {
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
     private userService: UserService,
+    private commentService: CommentService,
 
   ) {}
 
@@ -28,9 +30,44 @@ export class PostService {
     return this.postRepository.find();
   }
 
-  findOne(UUID: string) {
-    return this.postRepository.findOneBy({ UUID });
+  async findOne(UUID: string) {
+    const resPost = await this.postRepository.findOneBy({ UUID });
+
+    const cIds = resPost.comments.split(',');
+    let comments = [];
+
+    let poster = await this.userService.findOne(resPost.poster);
+
+    cIds.forEach(cUUID => {
+      comments.push(this.commentService.findOne(cUUID));
+    });
+
+    // return {
+    //   post: resPost,
+    //   poster: poster,
+    //   comments: comments
+    // };
+
+    return resPost;
+    
   }
+
+  async findCommentsForOne(UUID: string) {
+    const resPost = await this.postRepository.findOneBy({ UUID });
+
+    const cIds = resPost.comments.split(',');
+    let comments = [];
+
+    let poster = await this.userService.findOne(resPost.poster);
+
+    cIds.forEach(cUUID => {
+      comments.push(this.commentService.findOne(cUUID));
+    });
+
+    return comments;
+    
+  }
+
 
   async forCoachesByMember(UUID: string) {
     try {

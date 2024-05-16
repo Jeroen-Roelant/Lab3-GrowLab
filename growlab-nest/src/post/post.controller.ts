@@ -29,6 +29,22 @@ export class PostController {
     return this.postService.findOne(UUID);
   }
 
+  @Get('/comments/:UUID')
+  findCommentsForOne(@Param('UUID') UUID: string) {
+    return this.postService.findCommentsForOne(UUID);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/comments/:UUID')
+  makeComment(@Request() req: any, @Body() createPostDto: CreatePostDto) {
+    try {
+      createPostDto.poster = req.user.sub;
+      return this.postService.create(createPostDto);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   @Get('forCoachesByMember/:UUID')
   findByMember(@Param('UUID') UUID: string) {
     return this.postService.forCoachesByMember(UUID);
