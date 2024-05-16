@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -33,30 +33,46 @@ export class PostService {
   }
 
   async forCoachesByMember(UUID: string) {
-    const user = await this.userService.findOne(UUID);
+    try {
+      const user = await this.userService.findOne(UUID);
 
-    const csvData = user.connectionsCoaches.split(',');
+      const csvData = user.connectionsCoaches.split(',');
 
-    let posts = [];
+      let posts = [];
 
-    await Promise.all(csvData.map(async (coach) => { 
-      const coachPosts = await this.postRepository.find({
-        where: {
-          poster: coach
-        }
-      });
-      coachPosts.forEach((post) => {
-        posts.push(post);
-      });
-    }));
-
-    posts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-    return posts;
+      await Promise.all(csvData.map(async (coach) => { 
+        const coachPosts = await this.postRepository.find({
+          where: {
+            poster: coach
+          }
+        });
+        coachPosts.forEach((post) => {
+          posts.push(post);
+        });
+      }));
+      return posts;
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 
   update(UUID: string, updatePostDto: UpdatePostDto) {
     return this.postRepository.update(UUID, updatePostDto);
+  }
+
+  async addLike(UUID: string, likeUUID: string) {
+    const post = await this.postRepository.findOneBy({ UUID });
+    if (!post.likes.includes(likeUUID)) {
+      post.likes += likeUUID + ',';
+      this.postRepository.save(post);
+      return 1;
+    }
+    else {
+      post.likes = post.likes.replace(likeUUID + ',', '');
+      this.postRepository.save(post);
+      return -1;
+    }
   }
 
   remove(UUID: string) {

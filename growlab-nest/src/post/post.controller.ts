@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, HttpStatus } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -11,14 +11,12 @@ export class PostController {
   @UseGuards(AuthGuard)
   @Post()
   create(@Request() req: any, @Body() createPostDto: CreatePostDto) {
-    console.log(req.user);
     try {
       createPostDto.poster = req.user.sub;
       return this.postService.create(createPostDto);
     } catch (error) {
       console.log(error);
     }
-    
   }
 
   @Get()
@@ -44,5 +42,16 @@ export class PostController {
   @Delete(':UUID')
   remove(@Param('UUID') UUID: string) {
     return this.postService.remove(UUID);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('like/:UUID')
+  likePost(@Request() req: any, @Param('UUID') UUID: string) {
+    try {
+      let r = this.postService.addLike(UUID, req.user.sub);
+      return r;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
