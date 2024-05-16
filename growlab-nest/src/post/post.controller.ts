@@ -41,7 +41,11 @@ export class PostController {
     try {
       createCommentDto.poster = req.user.sub;
 
-      return this.postService.addComment(UUID, createCommentDto);
+      if (createCommentDto.content.trim().length === 0) {
+        return HttpStatus.BAD_REQUEST;
+      }
+      this.postService.addComment(UUID, createCommentDto);
+      return HttpStatus.OK;
     } catch (error) {
       console.log(error);
     }

@@ -55,18 +55,30 @@ export class PostService {
 
   async findCommentsForOne(UUID: string) {
     const resPost = await this.postRepository.findOneBy({ UUID });
-
+  
     const cIds = resPost.comments.split(',');
     
     const comments = await Promise.all(
       cIds.map(async cUUID => {
-        return this.commentService.findOne(cUUID);
+        let comment: LooseObject = await this.commentService.findOne(cUUID);
+  
+        if (comment) {
+          let user = await this.userService.findOne(comment.poster);
+          
+          if (user) {
+            comment.posterName = `${user.firstName} ${user.lastName}`;
+            comment.posterImage = user.profilePictureUrl;
+          }
+  
+          return comment;
+        }
       })
     );
-
+  
     comments.pop();
-
-    return comments;
+  
+    // Filter out null or undefined comments
+    return comments.filter(comment => comment);
   }
 
   async forCoachesByMember(UUID: string) {
