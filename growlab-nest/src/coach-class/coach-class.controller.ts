@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CoachClassService } from './coach-class.service';
 import { CreateCoachClassDto } from './dto/create-coach-class.dto';
 import { UpdateCoachClassDto } from './dto/update-coach-class.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('coach-class')
 export class CoachClassController {
@@ -22,6 +23,7 @@ export class CoachClassController {
     return this.coachClassService.findAllByMember(UUID);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':UUID')
   findOne(@Param('UUID') UUID: string) {
     return this.coachClassService.findOne(UUID);
