@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Session])],
   controllers: [SessionController],
   providers: [SessionService],
+  exports: [SessionService]
 })
 export class SessionModule {}

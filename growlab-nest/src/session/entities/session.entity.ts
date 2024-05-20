@@ -16,4 +16,7 @@ export class Session {
 
     @Column({ type: 'varchar', length: 150 })
     urlSession: string;
+
+    @Column({ type: 'tinyint', width: 1})
+    completed: boolean;
 }

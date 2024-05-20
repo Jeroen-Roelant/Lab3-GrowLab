@@ -43,12 +43,6 @@ export class PostService {
       comments.push(this.commentService.findOne(cUUID));
     });
 
-    // return {
-    //   post: resPost,
-    //   poster: poster,
-    //   comments: comments
-    // };
-
     return resPost;
     
   }

@@ -4,9 +4,6 @@ export class CreateSessionDto {
     UUID: string;
   
     @IsNotEmpty()
-    poster: string;
-  
-    @IsNotEmpty()
     title: string;
   
     @IsNotEmpty()
@@ -15,6 +12,7 @@ export class CreateSessionDto {
     @IsNotEmpty()
     date: Date;
 
-    @IsNotEmpty()
     urlSession: string;
+
+    completed: boolean;
 }
