@@ -7,6 +7,8 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 import { UserService } from 'src/user/user.service';
+import { CommentService } from 'src/comment/comment.service';
+import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 
 @Injectable()
 export class PostService {
@@ -14,6 +16,7 @@ export class PostService {
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
     private userService: UserService,
+    private commentService: CommentService,
 
   ) {}
 
@@ -28,8 +31,48 @@ export class PostService {
     return this.postRepository.find();
   }
 
-  findOne(UUID: string) {
-    return this.postRepository.findOneBy({ UUID });
+  async findOne(UUID: string) {
+    const resPost = await this.postRepository.findOneBy({ UUID });
+
+    const cIds = resPost.comments.split(',');
+    let comments = [];
+
+    let poster = await this.userService.findOne(resPost.poster);
+
+    cIds.forEach(cUUID => {
+      comments.push(this.commentService.findOne(cUUID));
+    });
+
+    return resPost;
+    
+  }
+
+  async findCommentsForOne(UUID: string) {
+    const resPost = await this.postRepository.findOneBy({ UUID });
+  
+    const cIds = resPost.comments.split(',');
+    
+    const comments = await Promise.all(
+      cIds.map(async cUUID => {
+        let comment: LooseObject = await this.commentService.findOne(cUUID);
+  
+        if (comment) {
+          let user = await this.userService.findOne(comment.poster);
+          
+          if (user) {
+            comment.posterName = `${user.firstName} ${user.lastName}`;
+            comment.posterImage = user.profilePictureUrl;
+          }
+  
+          return comment;
+        }
+      })
+    );
+  
+    comments.pop();
+  
+    // Filter out null or undefined comments
+    return comments.filter(comment => comment);
   }
 
   async forCoachesByMember(UUID: string) {
@@ -73,6 +116,15 @@ export class PostService {
       this.postRepository.save(post);
       return -1;
     }
+  }
+
+  async addComment(UUID: string, createCommentDto: CreateCommentDto) {
+    const post = await this.postRepository.findOneBy({ UUID });
+
+    const comment = await this.commentService.create(createCommentDto);
+    post.comments += comment.UUID + ',';
+
+    this.postRepository.save(post);
   }
 
   remove(UUID: string) {

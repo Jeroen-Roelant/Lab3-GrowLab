@@ -3,6 +3,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 
 @Controller('post')
 export class PostController {
@@ -27,6 +28,27 @@ export class PostController {
   @Get(':UUID')
   findOne(@Param('UUID') UUID: string) {
     return this.postService.findOne(UUID);
+  }
+
+  @Get('/comments/:UUID')
+  findCommentsForOne(@Param('UUID') UUID: string) {
+    return this.postService.findCommentsForOne(UUID);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/comment/:UUID')
+  makeComment(@Request() req: any, @Param('UUID') UUID: string, @Body() createCommentDto: CreateCommentDto) {
+    try {
+      createCommentDto.poster = req.user.sub;
+
+      if (createCommentDto.content.trim().length === 0) {
+        return HttpStatus.BAD_REQUEST;
+      }
+      this.postService.addComment(UUID, createCommentDto);
+      return HttpStatus.OK;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Get('forCoachesByMember/:UUID')

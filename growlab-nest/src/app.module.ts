@@ -21,6 +21,7 @@ import { StartupModule } from './startup/startup.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { RouterModule } from '@nestjs/core';
+import { SessionModule } from './session/session.module';
 
 dotenv.config();
 
@@ -48,7 +49,8 @@ dotenv.config();
     PostModule,
     StartupModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    SessionModule
   ],
   controllers: [AppController],
   providers: [AppService],
