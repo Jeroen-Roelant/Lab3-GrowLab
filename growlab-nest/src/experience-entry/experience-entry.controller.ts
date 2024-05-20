@@ -3,7 +3,7 @@ import { ExperienceEntryService } from './experience-entry.service';
 import { CreateExperienceEntryDto } from './dto/create-experience-entry.dto';
 import { UpdateExperienceEntryDto } from './dto/update-experience-entry.dto';
 
-@Controller('experience-entry')
+@Controller('experience')
 export class ExperienceEntryController {
   constructor(private readonly experienceEntryService: ExperienceEntryService) {}
 
@@ -21,6 +21,13 @@ export class ExperienceEntryController {
   findOne(@Param('UUID') UUID: string) {
     return this.experienceEntryService.findOne(UUID);
   }
+
+  //find all by UUID
+  @Get('/findall/:UUID')
+  findAllByUUID(@Param('UUID') UUID: string) {
+    return this.experienceEntryService.findAllByUUID(UUID);
+  }
+
 
   @Patch(':UUID')
   update(@Param('UUID') UUID: string, @Body() updateExperienceEntryDto: UpdateExperienceEntryDto) {

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
 
 @Entity('tblstartup')
 export class Startup {
@@ -11,8 +12,11 @@ export class Startup {
   @Column({ type: 'text', comment: 'Member IDs stored as CSV' })
   idMember: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, comment: 'Function name'})
   title: string;
+
+  @Column({ type: 'varchar', length: 100, comment: 'StartUp name'})
+  institution: string;
 
   @Column({ type: 'text' })
   description: string;

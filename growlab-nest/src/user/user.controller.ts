@@ -31,4 +31,5 @@ export class UserController {
   remove(@Param('UUID') UUID: string) {
     return this.userService.remove(UUID);
   }
+
 }

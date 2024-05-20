@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { ExperienceEntry } from 'src/experience-entry/entities/experience-entry.entity';
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
 
 export enum UserRole {
   ADMIN = "admin",
@@ -47,7 +48,7 @@ export class User {
   bannerPictureUrl: string;
 
   @Column({ type: 'text', comment: 'experience IDs stored as CSV', nullable: true })
-  educationId: string;
+  startupId: string;
 
   @Column({ type: 'text', comment: 'experience IDs stored as CSV', nullable: true })
   experienceId: string;
