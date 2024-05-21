@@ -4,11 +4,13 @@ import { CoachClassController } from './coach-class.controller';
 import { CoachClass } from './entities/coach-class.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionModule } from 'src/session/session.module';
+import { PostModule } from 'src/post/post.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CoachClass]),
-    SessionModule
+    SessionModule,
+    PostModule
   ],
   controllers: [CoachClassController],
   providers: [CoachClassService],

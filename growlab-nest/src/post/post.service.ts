@@ -33,16 +33,20 @@ export class PostService {
 
   async findOne(UUID: string) {
     const resPost = await this.postRepository.findOneBy({ UUID });
+    // console.log(UUID);
+    try {
+      const cIds = resPost.comments.split(',');
+      let comments = [];
+      cIds.forEach(cUUID => {
+        comments.push(this.commentService.findOne(cUUID));
+      });
+    }
+    catch (error) {
+      console.error(error);
+    }
 
-    const cIds = resPost.comments.split(',');
-    let comments = [];
-
-    let poster = await this.userService.findOne(resPost.poster);
-
-    cIds.forEach(cUUID => {
-      comments.push(this.commentService.findOne(cUUID));
-    });
-
+    // let poster = await this.userService.findOne(resPost.poster);
+    // console.log(resPost);
     return resPost;
     
   }

@@ -9,13 +9,15 @@ import { CoachClass } from './entities/coach-class.entity';
 import { SessionService } from 'src/session/session.service';
 import { CreateSessionDto } from 'src/session/dto/create-session.dto';
 import { Session } from 'src/session/entities/session.entity';
+import { PostService } from 'src/post/post.service';
 
 @Injectable()
 export class CoachClassService {
   constructor(
     @InjectRepository(CoachClass)
     private coachClassRepository: Repository<CoachClass>,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private postService: PostService
   ) {}
 
   create(createCoachClassDto: CreateCoachClassDto) {
@@ -50,6 +52,7 @@ export class CoachClassService {
   async findOne(UUID: string) {
     const resClass: LooseObject = await this.coachClassRepository.findOneBy({ UUID });
     const sIds = resClass.sessionId.split(',');
+    const pIds = resClass.postId.split(',');
 
     const sessions = await Promise.all(
       sIds.map(async sUUID => {
@@ -60,6 +63,16 @@ export class CoachClassService {
 
     sessions.pop();
     resClass.sessions = sessions;
+
+    const posts = await Promise.all(
+      pIds.map(async pUUID => {
+        let post: LooseObject = await this.postService.findOne(pUUID);
+        return post;
+      })
+    );
+
+    posts.pop();
+    resClass.posts = posts;
 
     return resClass;
   }
