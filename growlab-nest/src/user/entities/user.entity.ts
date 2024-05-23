@@ -41,7 +41,7 @@ export class User {
   @Column({ type: 'date' })
   dateJoined: Date;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 300, nullable: true })
   profilePictureUrl: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })

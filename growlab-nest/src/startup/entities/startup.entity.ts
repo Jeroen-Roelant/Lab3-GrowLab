@@ -24,10 +24,10 @@ export class Startup {
   @Column({ type: 'text', comment: 'post IDs stored as CSV' })
   postId: string;
 
-  @Column({ type: 'varchar', length: 100, comment: 'Logo URL'}) 
+  @Column({ type: 'varchar', length: 300, comment: 'Logo URL'}) 
   logoUrl: string;
 
-  @Column({ type: 'varchar', length: 100, comment: 'Logo URL'})
+  @Column({ type: 'varchar', length: 300, comment: 'Logo URL'})
   fotoUrl: string;
 }
 
