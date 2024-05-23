@@ -17,6 +17,12 @@ export class StartupController {
     return this.startupService.findAll();
   }
 
+  //find all by OwnerId (is UUID van de user)
+  @Get('/findall/:idOwner')
+  findAllByUUID(@Param('idOwner') idOwner: string) {
+    return this.startupService.findAllByidOwner(idOwner);
+  }
+
   @Get(':UUID')
   findOne(@Param('UUID') UUID: string) {
     return this.startupService.findOne(UUID);
