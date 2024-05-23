@@ -43,35 +43,46 @@ export class AuthService {
     username: string, 
     pass: string
   ): Promise<{ access_token: string }> {
+    try{
+      // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
 
-    // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
+      // console.log(username);
+      const user = await this.userService.findOneByEmail(username);
 
-    // console.log(username);
-    const user = await this.userService.findOneByEmail(username);
+      console.log(user);
+      if (!user) {
+        console.log("User not found");
+        throw new UnauthorizedException();
+      }
+      
+      // console.log(user);
 
-    if (!user) {
+      const authUser = await this.findOne(user.UUID);
+
+      // console.log(authUser);
+
+      if (authUser.passHash !== pass) {
+        console.log("Password incorrect");
+        throw new UnauthorizedException();
+      }
+      // console.log(authUser.passHash === pass);
+
+      if (authUser.passHash === pass && user.email === username && user.UUID === authUser.UUID) {
+        const payload = { 
+          sub: authUser.UUID, 
+          username: user.email
+        }
+
+        console.log("returning token");
+        return {
+          access_token: await this.jwtService.signAsync(payload),
+        }
+      }
       throw new UnauthorizedException();
-    }
-    
-    // console.log(user);
-
-    const authUser = await this.findOne(user.UUID);
-
-    // console.log(authUser);
-
-    if (authUser.passHash !== pass) {
-      throw new UnauthorizedException();
-    }
-    // console.log(authUser.passHash === pass);
-    
-    const payload = { 
-      sub: authUser.UUID, 
-      username: user.email
-    }
-
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    }
+  }
+  catch{
+    throw new UnauthorizedException();
+  }
   }
 
   async signUp(createAuthDto: CreateAuthDto) {

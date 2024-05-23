@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,27 +8,52 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    try{
+      return await this.userService.create(createUserDto);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Get()
   findAll() {
-    return this.userService.findAll();
+    try{
+      return this.userService.findAll();
+    } 
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Get(':UUID')
-  findOne(@Param('UUID') UUID: string) {
-    return this.userService.findOne(UUID);
+  async findOne(@Param('UUID') UUID: string) {
+    try{
+      return await this.userService.findOne(UUID);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Patch(':UUID')
-  update(@Param('UUID') UUID: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(UUID, updateUserDto);
+  async update(@Param('UUID') UUID: string, @Body() updateUserDto: UpdateUserDto) {
+    try{
+      return await this.userService.update(UUID, updateUserDto);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Delete(':UUID')
   remove(@Param('UUID') UUID: string) {
-    return this.userService.remove(UUID);
+    try{
+      return this.userService.remove(UUID);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 }
