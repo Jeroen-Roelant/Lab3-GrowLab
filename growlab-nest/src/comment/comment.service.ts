@@ -15,23 +15,42 @@ export class CommentService {
   ) {}
 
   create(createCommentDto: CreateCommentDto) {
-    const comment = new Comment();
-    Object.assign(comment, createCommentDto);
-    comment.UUID = uuidv4();
-    this.commentRepository.save(comment);
-    return comment;
+    try{  
+      const comment = new Comment();
+      Object.assign(comment, createCommentDto);
+      comment.UUID = uuidv4();
+      this.commentRepository.save(comment);
+      return comment;
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   findAll() {
     return this.commentRepository.find();
   }
 
-  findOne(UUID: string) {
-    return this.commentRepository.findOneBy({ UUID });
+  async findOne(UUID: string) {
+    try{
+      let c = await this.commentRepository.findOneBy({ UUID });
+      if (!c) {
+        throw new Error(`Comment ${UUID} not found`);
+      }
+      return c;
+    }
+    catch (error) {
+      return error;
+    }
   }
 
-  update(UUID: string, updateCommentDto: UpdateCommentDto) {
-    return this.commentRepository.update(UUID, updateCommentDto);
+  async update(UUID: string, updateCommentDto: UpdateCommentDto) {
+    try{
+      return await this.commentRepository.update(UUID, updateCommentDto);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   remove(UUID: string) {

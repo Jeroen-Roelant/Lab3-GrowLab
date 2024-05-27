@@ -21,7 +21,16 @@ export class CoachClassService {
   ) {}
 
   create(createCoachClassDto: CreateCoachClassDto) {
-    return this.coachClassRepository.save(createCoachClassDto);
+    try{
+      const coachClass = new CoachClass();
+      Object.assign(coachClass, createCoachClassDto);
+      coachClass.UUID = uuidv4();
+      this.coachClassRepository.save(coachClass);
+      return coachClass;
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   async addSession(UUID: string, createSessionDto: CreateSessionDto) {
@@ -42,43 +51,64 @@ export class CoachClassService {
   }
 
   async findAllByMember(UUID: string) {
-    return await this.coachClassRepository.find({
-      where: {
-        idMember: Like(`%${UUID}%`)
+    try{
+      let r = await this.coachClassRepository.find({
+        where: {
+          idMember: Like(`%${UUID}%`)
+        }
+      });
+
+      if (r.length === 0) {
+        throw 'no classes found';
       }
-    });
+      return r;
+    }
+    catch (error) {
+      throw new Error(error);
+    }
   }
 
   async findOne(UUID: string) {
-    const resClass: LooseObject = await this.coachClassRepository.findOneBy({ UUID });
-    const sIds = resClass.sessionId.split(',');
-    const pIds = resClass.postId.split(',');
+    try{
+      const resClass: LooseObject = await this.coachClassRepository.findOneBy({ UUID });
 
-    const sessions = await Promise.all(
-      sIds.map(async sUUID => {
-        let session: LooseObject = await this.sessionService.findOne(sUUID);
-        return session;
-      })
-    );
+      const sIds = resClass.sessionId.split(',');
+      sIds.pop();
 
-    sessions.pop();
-    resClass.sessions = sessions;
+      const pIds = resClass.postId.split(',');
+      pIds.pop();
 
-    const posts = await Promise.all(
-      pIds.map(async pUUID => {
-        let post: LooseObject = await this.postService.findOne(pUUID);
-        return post;
-      })
-    );
+      const sessions = await Promise.all(
+        sIds.map(async sUUID => {
+          let session: LooseObject = await this.sessionService.findOne(sUUID);
+          return session;
+        })
+      );
+      resClass.sessions = sessions;
+      resClass.sessions.sort((a, b) => b.date.getTime() - a.date.getTime());
 
-    posts.pop();
-    resClass.posts = posts;
-
-    return resClass;
+      const posts = await Promise.all(
+        pIds.map(async pUUID => {
+          let post: LooseObject = await this.postService.findOne(pUUID);
+          return post;
+        })
+      );
+      resClass.posts = posts;
+      
+      return resClass;
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   update(UUID: string, updateCoachClassDto: UpdateCoachClassDto) {
-    return this.coachClassRepository.update(UUID, updateCoachClassDto);
+    try{
+      return this.coachClassRepository.update(UUID, updateCoachClassDto);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   remove(UUID: string) {

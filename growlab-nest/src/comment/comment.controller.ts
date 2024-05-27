@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpException } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -18,13 +18,23 @@ export class CommentController {
   }
 
   @Get(':UUID')
-  findOne(@Param('UUID') UUID: string) {
-    return this.commentService.findOne(UUID);
+  async findOne(@Param('UUID') UUID: string) {
+    try {
+      return await this.commentService.findOne(UUID);
+    }
+    catch (error) {
+      return new HttpException(error, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Patch(':UUID')
-  update(@Param('UUID') UUID: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(UUID, updateCommentDto);
+  async update(@Param('UUID') UUID: string, @Body() updateCommentDto: UpdateCommentDto) {
+    try{
+      return await this.commentService.update(UUID, updateCommentDto);
+    }
+    catch (error) {
+      return new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':UUID')

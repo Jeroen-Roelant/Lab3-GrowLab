@@ -20,11 +20,11 @@ export class AuthService {
   }
 
   create(createAuthDto: CreateAuthDto) {
-    this.authRepository.save(createAuthDto);
+    // this.authRepository.save(createAuthDto);
   }
 
   findAll() {
-    return this.authRepository.find();
+    // return this.authRepository.find();
   }
 
   findOne(UUID: string) {
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   update(UUID: string, updateAuthDto: UpdateAuthDto) {
-    return this.authRepository.update(UUID, updateAuthDto);
+    // return this.authRepository.update(UUID, updateAuthDto);
   }
 
   remove(UUID: string) {
@@ -45,8 +45,6 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     try{
       // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
-
-      // console.log(username);
       const user = await this.userService.findOneByEmail(username);
 
       console.log(user);
@@ -54,18 +52,13 @@ export class AuthService {
         console.log("User not found");
         throw new UnauthorizedException();
       }
-      
-      // console.log(user);
-
+    
       const authUser = await this.findOne(user.UUID);
-
-      // console.log(authUser);
 
       if (authUser.passHash !== pass) {
         console.log("Password incorrect");
         throw new UnauthorizedException();
       }
-      // console.log(authUser.passHash === pass);
 
       if (authUser.passHash === pass && user.email === username && user.UUID === authUser.UUID) {
         const payload = { 
@@ -73,16 +66,15 @@ export class AuthService {
           username: user.email
         }
 
-        console.log("returning token");
         return {
           access_token: await this.jwtService.signAsync(payload),
         }
       }
       throw new UnauthorizedException();
-  }
-  catch{
-    throw new UnauthorizedException();
-  }
+    }
+    catch{
+      throw new UnauthorizedException();
+    }
   }
 
   async signUp(createAuthDto: CreateAuthDto) {
