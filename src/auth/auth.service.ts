@@ -20,11 +20,11 @@ export class AuthService {
   }
 
   create(createAuthDto: CreateAuthDto) {
-    this.authRepository.save(createAuthDto);
+    // this.authRepository.save(createAuthDto);
   }
 
   findAll() {
-    return this.authRepository.find();
+    // return this.authRepository.find();
   }
 
   findOne(UUID: string) {
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   update(UUID: string, updateAuthDto: UpdateAuthDto) {
-    return this.authRepository.update(UUID, updateAuthDto);
+    // return this.authRepository.update(UUID, updateAuthDto);
   }
 
   remove(UUID: string) {
@@ -43,34 +43,37 @@ export class AuthService {
     username: string, 
     pass: string
   ): Promise<{ access_token: string }> {
+    try{
+      // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
+      const user = await this.userService.findOneByEmail(username);
 
-    // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
+      console.log(user);
+      if (!user) {
+        console.log("User not found");
+        throw new UnauthorizedException();
+      }
+    
+      const authUser = await this.findOne(user.UUID);
 
-    // console.log(username);
-    const user = await this.userService.findOneByEmail(username);
+      if (authUser.passHash !== pass) {
+        console.log("Password incorrect");
+        throw new UnauthorizedException();
+      }
 
-    if (!user) {
+      if (authUser.passHash === pass && user.email === username && user.UUID === authUser.UUID) {
+        const payload = { 
+          sub: authUser.UUID, 
+          username: user.email
+        }
+
+        return {
+          access_token: await this.jwtService.signAsync(payload),
+        }
+      }
       throw new UnauthorizedException();
     }
-    
-    // console.log(user);
-
-    const authUser = await this.findOne(user.UUID);
-
-    // console.log(authUser);
-
-    if (authUser.passHash !== pass) {
+    catch{
       throw new UnauthorizedException();
-    }
-    // console.log(authUser.passHash === pass);
-    
-    const payload = { 
-      sub: authUser.UUID, 
-      username: user.email
-    }
-
-    return {
-      access_token: await this.jwtService.signAsync(payload),
     }
   }
 

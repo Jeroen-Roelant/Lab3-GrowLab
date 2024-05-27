@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
 import { CoachClassService } from './coach-class.service';
 import { CreateCoachClassDto } from './dto/create-coach-class.dto';
 import { UpdateCoachClassDto } from './dto/update-coach-class.dto';
@@ -26,14 +26,24 @@ export class CoachClassController {
   }
 
   @Get('forMember/:UUID')
-  findByMember(@Param('UUID') UUID: string) {
-    return this.coachClassService.findAllByMember(UUID);
+  async findByMember(@Param('UUID') UUID: string) {
+    try{ 
+      return await this.coachClassService.findAllByMember(UUID);
+    }
+    catch(error){
+      return new HttpException(error, HttpStatus.NOT_FOUND);
+    }
   }
 
   @UseGuards(AuthGuard)
   @Get(':UUID')
-  findOne(@Param('UUID') UUID: string) {
-    return this.coachClassService.findOne(UUID);
+  async findOne(@Param('UUID') UUID: string) {
+    try{
+      return await this.coachClassService.findOne(UUID);
+    }
+    catch (error) {
+      return new HttpException(error, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Patch(':UUID')

@@ -6,8 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
-import { TestProductModule } from './test-product/test-product.module';
-import { TestProduct } from './test-product/entities/test-product.entity';
 import { BadgeModule } from './badge/badge.module';
 import { ChatModule } from './chat/chat.module';
 import { CoachClassModule } from './coach-class/coach-class.module';
@@ -20,7 +18,6 @@ import { PostModule } from './post/post.module';
 import { StartupModule } from './startup/startup.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { RouterModule } from '@nestjs/core';
 import { SessionModule } from './session/session.module';
 
 dotenv.config();
@@ -37,7 +34,6 @@ dotenv.config();
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
     }),
-    TestProductModule,
     BadgeModule,
     ChatModule,
     CoachClassModule,

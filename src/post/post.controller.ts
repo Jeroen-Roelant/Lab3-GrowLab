@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, HttpStatus, HttpException } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
+import { BadRequestException } from '@nestjs/common';
+
 
 @Controller('post')
 export class PostController {
@@ -11,69 +13,97 @@ export class PostController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Request() req: any, @Body() createPostDto: CreatePostDto) {
+  async create(@Request() req: any, @Body() createPostDto: CreatePostDto) {
     try {
       createPostDto.poster = req.user.sub;
-      return this.postService.create(createPostDto);
+      return await this.postService.create(createPostDto);
     } catch (error) {
-      console.log(error);
+      return HttpStatus.BAD_REQUEST;
     }
   }
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  async findAll() {
+    try{
+      return this.postService.findAll();
+    } 
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Get(':UUID')
-  findOne(@Param('UUID') UUID: string) {
-    return this.postService.findOne(UUID);
+  async findOne(@Param('UUID') UUID: string) {
+    try {
+      return await this.postService.findOne(UUID);
+    } catch (error) {
+      return new HttpException(error, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Get('/comments/:UUID')
-  findCommentsForOne(@Param('UUID') UUID: string) {
-    return this.postService.findCommentsForOne(UUID);
+  async findCommentsForOne(@Param('UUID') UUID: string) {
+    try{
+      return await this.postService.findCommentsForOne(UUID);
+    }
+    catch (error) {
+      return new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @UseGuards(AuthGuard)
   @Post('/comment/:UUID')
-  makeComment(@Request() req: any, @Param('UUID') UUID: string, @Body() createCommentDto: CreateCommentDto) {
+  async makeComment(@Request() req: any, @Param('UUID') UUID: string, @Body() createCommentDto: CreateCommentDto) {
     try {
       createCommentDto.poster = req.user.sub;
 
       if (createCommentDto.content.trim().length === 0) {
-        return HttpStatus.BAD_REQUEST;
+        throw new BadRequestException('Comment cannot be empty');
       }
-      this.postService.addComment(UUID, createCommentDto);
+      await this.postService.addComment(UUID, createCommentDto);
       return HttpStatus.OK;
     } catch (error) {
-      console.log(error);
+      return new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Get('forCoachesByMember/:UUID')
-  findByMember(@Param('UUID') UUID: string) {
-    return this.postService.forCoachesByMember(UUID);
+  async findByMember(@Param('UUID') UUID: string) {
+    try{
+      return await this.postService.forCoachesByMember(UUID);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Patch(':UUID')
-  update(@Param('UUID') UUID: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(UUID, updatePostDto);
+  async update(@Param('UUID') UUID: string, @Body() updatePostDto: UpdatePostDto) {
+    try{
+      return await this.postService.update(UUID, updatePostDto);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @Delete(':UUID')
   remove(@Param('UUID') UUID: string) {
-    return this.postService.remove(UUID);
+    try {
+      return this.postService.remove(UUID);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
   }
 
   @UseGuards(AuthGuard)
   @Get('like/:UUID')
-  likePost(@Request() req: any, @Param('UUID') UUID: string) {
+  async likePost(@Request() req: any, @Param('UUID') UUID: string) {
     try {
-      let r = this.postService.addLike(UUID, req.user.sub);
-      return r;
+      return await this.postService.addLike(UUID, req.user.sub);
     } catch (error) {
-      console.log(error);
+      return HttpStatus.BAD_REQUEST;
     }
   }
 }

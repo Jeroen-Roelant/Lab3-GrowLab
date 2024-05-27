@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -21,67 +21,87 @@ export class PostService {
   ) {}
 
   create(createPostDto: CreatePostDto) {
-    const post = new Post();
-    Object.assign(post, createPostDto);
-    post.UUID = uuidv4();
-    this.postRepository.save(post);
+    try{
+      const post = new Post();
+      Object.assign(post, createPostDto);
+      post.UUID = uuidv4();
+      this.postRepository.save(post);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   findAll() {
-    return this.postRepository.find();
+    try{
+      return this.postRepository.find();
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   async findOne(UUID: string) {
-    const resPost = await this.postRepository.findOneBy({ UUID });
-    // console.log(UUID);
-    try {
+    try{
+      const resPost : LooseObject = await this.postRepository.findOneBy({ UUID });
+      if (!resPost) {
+        throw new NotFoundException(`Post with UUID ${UUID} not found`);
+      }
+
       const cIds = resPost.comments.split(',');
       let comments = [];
-      cIds.forEach(cUUID => {
-        comments.push(this.commentService.findOne(cUUID));
+      cIds.forEach(async cUUID => {
+        let c = await this.commentService.findOne(cUUID);
+        comments.push(c);
       });
+      resPost.comments_obj = comments;
+      return resPost; 
     }
     catch (error) {
-      console.error(error);
+      throw new Error(error);
     }
-
-    // let poster = await this.userService.findOne(resPost.poster);
-    // console.log(resPost);
-    return resPost;
-    
   }
 
   async findCommentsForOne(UUID: string) {
-    const resPost = await this.postRepository.findOneBy({ UUID });
+    try{
+      const resPost = await this.postRepository.findOneBy({ UUID });
+      if (!resPost) {
+        throw new NotFoundException(`Post with UUID ${UUID} not found`);
+      }
   
-    const cIds = resPost.comments.split(',');
+      const cIds = resPost.comments.split(',');
+      
+      const comments = await Promise.all(
+        cIds.map(async cUUID => {
+          let comment: LooseObject = await this.commentService.findOne(cUUID);
     
-    const comments = await Promise.all(
-      cIds.map(async cUUID => {
-        let comment: LooseObject = await this.commentService.findOne(cUUID);
-  
-        if (comment) {
-          let user = await this.userService.findOne(comment.poster);
-          
-          if (user) {
-            comment.posterName = `${user.firstName} ${user.lastName}`;
-            comment.posterImage = user.profilePictureUrl;
+          if (comment) {
+            let user = await this.userService.findOne(comment.poster);
+            
+            if (user) {
+              comment.posterName = `${user.firstName} ${user.lastName}`;
+              comment.posterImage = user.profilePictureUrl;
+            }
+    
+            return comment;
           }
-  
-          return comment;
-        }
-      })
-    );
-  
-    comments.pop();
-  
-    // Filter out null or undefined comments
-    return comments.filter(comment => comment);
+        })
+      );
+    
+      comments.pop();
+      return comments.filter(comment => comment);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   async forCoachesByMember(UUID: string) {
     try {
       const user = await this.userService.findOne(UUID);
+      if (!user) {
+        throw new NotFoundException(`User with UUID ${UUID} not found`);
+      }
 
       const csvData = user.connectionsCoaches.split(',');
 
@@ -100,35 +120,59 @@ export class PostService {
       return posts;
     }
     catch (error) {
-      console.error(error);
+      return error;
     }
+    
   }
 
   update(UUID: string, updatePostDto: UpdatePostDto) {
-    return this.postRepository.update(UUID, updatePostDto);
+    try{
+      return this.postRepository.update(UUID, updatePostDto);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   async addLike(UUID: string, likeUUID: string) {
-    const post = await this.postRepository.findOneBy({ UUID });
-    if (!post.likes.includes(likeUUID)) {
-      post.likes += likeUUID + ',';
-      this.postRepository.save(post);
-      return 1;
+    try{
+      const post = await this.postRepository.findOneBy({ UUID });
+      if (!post) {
+        throw new NotFoundException(`Post with UUID ${UUID} not found`);
+      }
+
+      if (!post.likes.includes(likeUUID)) {
+        post.likes += likeUUID + ',';
+        this.postRepository.save(post);
+        return 1;
+      }
+      else {
+        post.likes = post.likes.replace(likeUUID + ',', '');
+        this.postRepository.save(post);
+        return -1;
+      }
     }
-    else {
-      post.likes = post.likes.replace(likeUUID + ',', '');
-      this.postRepository.save(post);
-      return -1;
+    catch (error) {
+      return error;
     }
+    
   }
 
   async addComment(UUID: string, createCommentDto: CreateCommentDto) {
-    const post = await this.postRepository.findOneBy({ UUID });
+    try{
+      const post = await this.postRepository.findOneBy({ UUID });
+      if (!post) {
+        throw new NotFoundException(`Post with UUID ${UUID} not found`);
+      }
 
-    const comment = await this.commentService.create(createCommentDto);
-    post.comments += comment.UUID + ',';
+      const comment = await this.commentService.create(createCommentDto);
+      post.comments += comment.UUID + ',';
 
-    this.postRepository.save(post);
+      this.postRepository.save(post);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   remove(UUID: string) {

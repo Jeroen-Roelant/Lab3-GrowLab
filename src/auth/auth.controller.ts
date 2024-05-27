@@ -22,8 +22,13 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.pass);
+  async signIn(@Body() signInDto: Record<string, any>) {
+    try{
+      return await this.authService.signIn(signInDto.username, signInDto.pass);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   @UseGuards(AuthGuard)
