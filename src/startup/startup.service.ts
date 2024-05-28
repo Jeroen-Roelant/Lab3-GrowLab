@@ -25,6 +25,11 @@ export class StartupService {
     return this.startupRepository.findOneBy({ UUID });
   }
 
+  //find all by OwnerId (is UUID van de user)
+  findAllByidOwner(idOwner: string) {
+    return this.startupRepository.find({ where: { idOwner } });
+  }
+
   update(UUID: string, updateStartupDto: UpdateStartupDto) {
     return this.startupRepository.update(UUID, updateStartupDto);
   }

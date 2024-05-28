@@ -21,6 +21,11 @@ export class ExperienceEntryService {
     return this.experienceEntryRepository.find();
   }
 
+  //find all by UUID
+  findAllByUUID(UUID: string) {
+    return this.experienceEntryRepository.find({ where: { UUID } });
+  }
+
   findOne(UUID: string) {
     return this.experienceEntryRepository.findOneBy({ UUID });
   }
