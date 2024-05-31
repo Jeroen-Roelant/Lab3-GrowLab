@@ -12,7 +12,12 @@ export class SessionController {
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createSessionDto: CreateSessionDto) {
-    return this.sessionService.create(createSessionDto);
+    try{
+      return this.sessionService.create(createSessionDto);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   @UseGuards(AuthGuard)

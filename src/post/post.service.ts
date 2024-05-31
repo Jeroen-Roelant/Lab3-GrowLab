@@ -48,12 +48,16 @@ export class PostService {
         throw new NotFoundException(`Post with UUID ${UUID} not found`);
       }
 
+      let user = await this.userService.findOne(resPost.poster);
+      resPost.user = user;
+
       const cIds = resPost.comments.split(',');
       let comments = [];
       cIds.forEach(async cUUID => {
         let c = await this.commentService.findOne(cUUID);
         comments.push(c);
       });
+
       resPost.comments_obj = comments;
       return resPost; 
     }

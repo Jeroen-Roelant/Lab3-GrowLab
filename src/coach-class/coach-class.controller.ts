@@ -35,6 +35,16 @@ export class CoachClassController {
     }
   }
 
+  @Get('forOwner/:UUID')
+  async findByOwner(@Param('UUID') UUID: string) {
+    try{ 
+      return await this.coachClassService.findAllByOwner(UUID);
+    }
+    catch(error){
+      return new HttpException(error, HttpStatus.NOT_FOUND);
+    }
+  }
+
   @UseGuards(AuthGuard)
   @Get(':UUID')
   async findOne(@Param('UUID') UUID: string) {

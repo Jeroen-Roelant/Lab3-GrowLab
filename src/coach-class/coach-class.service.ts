@@ -68,6 +68,24 @@ export class CoachClassService {
     }
   }
 
+  async findAllByOwner(UUID: string) {
+    try{
+      let r = await this.coachClassRepository.find({
+        where: {
+          idOwner: Like(`%${UUID}%`)
+        }
+      });
+
+      if (r.length === 0) {
+        throw 'no classes found';
+      }
+      return r;
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async findOne(UUID: string) {
     try{
       const resClass: LooseObject = await this.coachClassRepository.findOneBy({ UUID });

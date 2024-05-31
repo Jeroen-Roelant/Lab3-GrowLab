@@ -46,17 +46,13 @@ export class AuthService {
     try{
       // https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
       const user = await this.userService.findOneByEmail(username);
-
-      console.log(user);
       if (!user) {
-        console.log("User not found");
         throw new UnauthorizedException();
       }
     
       const authUser = await this.findOne(user.UUID);
 
       if (authUser.passHash !== pass) {
-        console.log("Password incorrect");
         throw new UnauthorizedException();
       }
 
