@@ -19,8 +19,7 @@ export class CommentService {
       const comment = new Comment();
       Object.assign(comment, createCommentDto);
       comment.UUID = uuidv4();
-      this.commentRepository.save(comment);
-      return comment;
+      return this.commentRepository.save(comment);
     }
     catch (error) {
       return error;

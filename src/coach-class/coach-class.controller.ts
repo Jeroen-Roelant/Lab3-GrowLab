@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Request, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
+
 import { CoachClassService } from './coach-class.service';
 import { CreateCoachClassDto } from './dto/create-coach-class.dto';
 import { UpdateCoachClassDto } from './dto/update-coach-class.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateSessionDto } from 'src/session/dto/create-session.dto';
+import { CreatePostDto } from 'src/post/dto/create-post.dto';
 
 @Controller('coach-class')
 export class CoachClassController {
@@ -18,6 +20,13 @@ export class CoachClassController {
   @Post(':UUID/session')
   addSession(@Param('UUID') UUID: string, @Body() createSessionDto: CreateSessionDto) {
     return this.coachClassService.addSession(UUID, createSessionDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post(':UUID/post')
+  addPost(@Request() req: any, @Param('UUID') UUID: string, @Body() createPostDto: CreatePostDto) {
+    createPostDto.poster = req.user.sub;
+    return this.coachClassService.addPost(UUID, createPostDto);
   }
 
   @Get()

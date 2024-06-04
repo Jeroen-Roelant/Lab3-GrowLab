@@ -25,12 +25,24 @@ export class PostService {
       const post = new Post();
       Object.assign(post, createPostDto);
       post.UUID = uuidv4();
-      this.postRepository.save(post);
+      return this.postRepository.save(post);
     }
     catch (error) {
       return error;
     }
   }
+
+  // createForClass(createPostDto: CreatePostDto) {
+  //   try{
+  //     const post = new Post();
+  //     Object.assign(post, createPostDto);
+  //     post.UUID = uuidv4();
+  //     this.postRepository.save(post);
+  //   }
+  //   catch (error) {
+  //     return error;
+  //   }
+  // }
 
   findAll() {
     try{

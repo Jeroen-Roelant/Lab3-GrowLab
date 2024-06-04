@@ -22,6 +22,17 @@ export class PostController {
     }
   }
 
+  // @UseGuards(AuthGuard)
+  // @Post('/class/:UUID')
+  // async createPostForClass(@Request() req: any, @Param() cUUID, @Body() createPostDto: CreatePostDto) {
+  //   try {
+  //     createPostDto.poster = req.user.sub;
+  //     return await this.postService.create(createPostDto);
+  //   } catch (error) {
+  //     return HttpStatus.BAD_REQUEST;
+  //   }
+  // }
+
   @Get()
   async findAll() {
     try{

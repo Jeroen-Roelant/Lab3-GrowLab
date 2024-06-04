@@ -14,5 +14,6 @@ import { PostModule } from 'src/post/post.module';
   ],
   controllers: [CoachClassController],
   providers: [CoachClassService],
+  exports: [CoachClassService]
 })
 export class CoachClassModule {}

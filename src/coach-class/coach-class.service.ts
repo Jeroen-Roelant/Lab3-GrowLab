@@ -10,6 +10,7 @@ import { SessionService } from 'src/session/session.service';
 import { CreateSessionDto } from 'src/session/dto/create-session.dto';
 import { Session } from 'src/session/entities/session.entity';
 import { PostService } from 'src/post/post.service';
+import { CreatePostDto } from 'src/post/dto/create-post.dto';
 
 @Injectable()
 export class CoachClassService {
@@ -31,6 +32,15 @@ export class CoachClassService {
     catch (error) {
       return error;
     }
+  }
+
+  async addPost(UUID: string, createPostDto: CreatePostDto) {
+    const coachClass: LooseObject = await this.coachClassRepository.findOneBy({ UUID });
+
+    let post = await this.postService.create(createPostDto);
+    coachClass.postId = coachClass.postId + post.UUID + ',';
+
+    return this.coachClassRepository.update(UUID, coachClass);
   }
 
   async addSession(UUID: string, createSessionDto: CreateSessionDto) {
