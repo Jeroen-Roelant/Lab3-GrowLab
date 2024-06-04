@@ -73,6 +73,11 @@ export class AuthService {
     }
   }
 
+  async getRole(uuid: string) {
+     const user = await this.userService.findOne(uuid);
+     return user;
+  }
+
   async signUp(createAuthDto: CreateAuthDto) {
     const user = await this.userService.create(createAuthDto);
     return this.create(createAuthDto);
