@@ -68,4 +68,24 @@ export class UserService {
   remove(UUID: string) {
     
   }
+
+  //add new UUID to connectionsStarters of user with UUID
+  async addStarterConnection(UUID: string, starterUUID: string) {
+    console.log("hier")
+
+    try{
+      let u = await this.userRepository.findOneBy({UUID});
+      console.log(u);
+      console.log(starterUUID);
+      console.log(u.connectionsStarters);
+      if (!u) {
+        throw new NotFoundException(`User with UUID ${UUID} not found`);
+      }
+      u.connectionsStarters = u.connectionsStarters + "," + starterUUID;
+      return this.userRepository.save(u);
+    }
+    catch (error) {
+      return error;
+    }
+  }
 }
