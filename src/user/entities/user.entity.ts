@@ -26,6 +26,9 @@ export class User {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.GHOST})
   role: string;
 
+  @Column({ type: 'varchar', length: 80, nullable: true })
+  function: string;
+
   @Column({ type: 'text', comment: 'Coach connections stored as CSV', nullable: true })
   connectionsCoaches: string;
 
