@@ -75,9 +75,6 @@ export class UserService {
 
     try{
       let u = await this.userRepository.findOneBy({UUID});
-      console.log(u);
-      console.log(starterUUID);
-      console.log(u.connectionsStarters);
       if (!u) {
         throw new NotFoundException(`User with UUID ${UUID} not found`);
       }
@@ -88,4 +85,21 @@ export class UserService {
       return error;
     }
   }
+
+
+  //delete UUID from connectionsStarters of user with UUID
+  async deleteStarterConnection(UUID: string, starterUUID: string) {
+    try{
+      let u = await this.userRepository.findOneBy({UUID});
+      if (!u) {
+        throw new NotFoundException(`User with UUID ${UUID} not found`);
+      }
+      u.connectionsStarters = u.connectionsStarters.replace(starterUUID, "");
+      return this.userRepository.save(u);
+    }
+    catch (error) {
+      return error;
+    }
+  }
+
 }

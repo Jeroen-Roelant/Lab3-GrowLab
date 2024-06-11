@@ -71,5 +71,15 @@ export class UserController {
     }
   }
 
+  //delete connection from connectionsStarters of user with UUID
+  @Delete(':UUID/:connectionUUID')
+  async deleteConnectionStarter(@Param('UUID') UUID: string, @Param('connectionUUID') connectionUUID: string) {
+    try{
+      return await this.userService.deleteStarterConnection(UUID, connectionUUID);
+    }
+    catch (error) {
+      return HttpStatus.BAD_REQUEST;
+    }
+  }
 
 }
