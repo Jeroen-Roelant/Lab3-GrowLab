@@ -29,9 +29,7 @@ export class UserController {
 
   @Get(':UUID')
   async findOne(@Param('UUID') UUID: string) {
-    console.log("testje")
     try{
-      console.log("testje")
       return await this.userService.findOne(UUID);
     }
     catch (error) {
@@ -62,7 +60,6 @@ export class UserController {
     //add new UUID to connectionsStarters of user with UUID
   @Patch(':UUID/:connectionUUID')
   async addConnectionStarter(@Param('UUID') UUID: string, @Param('connectionUUID') connectionUUID: string) {
-    console.log("hier controller")
     try{
       return await this.userService.addStarterConnection(UUID, connectionUUID);
     }
