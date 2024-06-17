@@ -36,15 +36,12 @@ export class ChatController {
         createChatDto.user1 = user1;
         createChatDto.user2 = user2;
         createChatDto.messages = [""];
-        console.log('createChatDto');
         return this.chatService.create(createChatDto);
       }
 
-      console.log(chat);
       return chat;
     }
     catch(error){
-      console.log(error);
       return error;
     }
   }
