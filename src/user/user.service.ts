@@ -71,8 +71,6 @@ export class UserService {
 
   //add new UUID to connectionsStarters of user with UUID
   async addStarterConnection(UUID: string, starterUUID: string) {
-    console.log("hier")
-
     try{
       let u = await this.userRepository.findOneBy({UUID});
       if (!u) {

@@ -16,6 +16,9 @@ export class Message {
 
   @Column({ type: 'enum', enum: ['text', 'image'] })
   type: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }
 
 /*

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
@@ -14,7 +15,15 @@ export class MessageService {
   ) {}
 
   create(createMessageDto: CreateMessageDto) {
-    this.messageRepository.save(createMessageDto);
+    try {
+      const message = new Message();
+      Object.assign(message, createMessageDto);
+      message.UUID = uuidv4();
+      return this.messageRepository.save(message);
+    } catch (error) {
+      console.error('Error while saving message:', error);
+      throw error;
+    }
   }
 
   findAll() {
